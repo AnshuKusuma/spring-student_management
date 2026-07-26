@@ -21,17 +21,17 @@ pipeline {
         //     }
         // }
 
-        stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                    bat '''
-                    mvn sonar:sonar ^
-                    -Dsonar.projectKey=spring-crud ^
-                    -Dsonar.projectName=spring-project
-                    '''
-                }
-            }
+        sstage('SonarQube Analysis') {
+    steps {
+        withSonarQubeEnv('SonarQube') {
+            bat '''
+            mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar ^
+            -Dsonar.projectKey=spring-crud ^
+            -Dsonar.projectName=spring-project
+            '''
         }
+    }
+}
 
         stage('Quality Gate') {
             steps {
