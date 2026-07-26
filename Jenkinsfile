@@ -15,6 +15,31 @@ pipeline {
             }
         }
 
+        // stage('Test') {
+        //     steps {
+        //         bat 'mvn test'
+        //     }
+        // }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') {
+                    bat '''
+                    mvn sonar:sonar ^
+                    -Dsonar.projectKey=spring-crud ^
+                    -Dsonar.projectName=spring-project
+                    '''
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 2, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
     }
 
     post {
