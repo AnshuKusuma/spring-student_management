@@ -18,7 +18,7 @@ public class GlobalException {
 	
 	@ExceptionHandler(ExistsException.class)
 	public ResponseEntity exists(ExistsException ex) {
-		return new ResponseEntity(ex.getMessage(),HttpStatus.NOT_FOUND);
+		return new ResponseEntity(ex.getMessage(),HttpStatus.ALREADY_REPORTED);
 	}
 
 }
