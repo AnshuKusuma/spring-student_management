@@ -7,13 +7,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
-import org.hamcrest.Matchers;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -27,7 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import com.example.demo.entity.Student;
 import com.example.demo.exception.ExistsException;
 import com.example.demo.exception.NotFoundException;
-import com.example.demo.repo.StudentRepo;
+
 import com.example.demo.service.StudentService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,7 +32,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class StudentControllerTest {
+class StudentControllerTest {
 	
 	@MockitoBean
 	private StudentService service;
@@ -44,8 +40,6 @@ public class StudentControllerTest {
 	@Autowired
 	private MockMvc mockMvc;
 	
-//	@Autowired
-//	private ObjectMapper mapper;
 	
 	 private final ObjectMapper mapper = new ObjectMapper();
 	
@@ -60,9 +54,7 @@ public class StudentControllerTest {
 	}
 	
 	@Test
-	public void testAddStudent() throws JsonProcessingException,Exception{
-//		Mockito.when(srepo.findById(1)).thenReturn(opt2);
-//		Mockito.when(srepo.save(Mockito.any(Student.class))).thenReturn(opt1.get());
+	void testAddStudent() throws Exception{
 		Student s=new Student(2,"bbb","ece","6765786876",75);
 		Mockito.when(service.create(s))
         .thenReturn(s);
@@ -70,11 +62,10 @@ public class StudentControllerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(mapper.writeValueAsString(s))).
 		       andExpect(status().isCreated());
-//		       andExpect(content().string(Matchers.containsString("Student added")));
 	}
 	
 	@Test
-	public void testExistingStudent() throws Exception {
+	void testExistingStudent() throws Exception {
 	    Mockito.when(service.create(Mockito.any(Student.class)))
 	           .thenThrow(new ExistsException("Student already exists with given id"));
 
@@ -85,7 +76,7 @@ public class StudentControllerTest {
 	}
 	
 	@Test
-	public void testGetId() throws Exception{
+	void testGetId() throws Exception{
 		Mockito.when(service.getbyid(1)).thenReturn(opt1.get());
 		
 		 mockMvc.perform(get("/getbyid/1")
@@ -95,7 +86,7 @@ public class StudentControllerTest {
 	}
 	
 	@Test
-	public void testGetIdNot() throws Exception{
+	void testGetIdNot() throws Exception{
 		Mockito.when(service.getbyid(2))
 		.thenThrow(new NotFoundException("Student not found with given id"));
 		
@@ -104,7 +95,7 @@ public class StudentControllerTest {
 	}
 	
 	@Test
-	public void testGetAll() throws Exception{
+	void testGetAll() throws Exception{
 		List<Student> lst=new ArrayList<>();
 		lst.add(opt1.get());
 		Mockito.when(service.getall()).thenReturn(lst);
@@ -117,7 +108,7 @@ public class StudentControllerTest {
 	}
 	
 	@Test
-	public void testDeleteId() throws Exception{
+	void testDeleteId() throws Exception{
 		Mockito.when(service.deletebyid(1)).thenReturn("Deleted");
 		mockMvc.perform(delete("/delete/1")
 	            .contentType(MediaType.APPLICATION_JSON)
@@ -127,7 +118,7 @@ public class StudentControllerTest {
 	}
 	
 	@Test
-	public void testDeleteIdNot() throws Exception{
+	void testDeleteIdNot() throws Exception{
 		Mockito.when(service.deletebyid(2))
 		.thenThrow(new NotFoundException("Student not found with given id"));
 		
