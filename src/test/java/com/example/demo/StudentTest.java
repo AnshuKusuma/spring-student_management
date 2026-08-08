@@ -44,6 +44,40 @@ public class StudentTest {
 	}
 	
 	@Test
+	public void testStudentGettersAndSetters() {
+	    Student student = new Student();
+
+	    student.setId(10);
+	    student.setName("John");
+	    student.setDept("CSE");
+	    student.setMobileno("9876543210");
+	    student.setMarks(90);
+
+	    assertEquals(10, student.getId());
+	    assertEquals("John", student.getName());
+	    assertEquals("CSE", student.getDept());
+	    assertEquals("9876543210", student.getMobileno());
+	    assertEquals(90, student.getMarks());
+	}
+	
+	@Test
+	public void testStudentParameterizedConstructor() {
+	    Student student = new Student(
+	            20,
+	            "Test Student",
+	            "ECE",
+	            "9999999999",
+	            85
+	    );
+
+	    assertEquals(20, student.getId());
+	    assertEquals("Test Student", student.getName());
+	    assertEquals("ECE", student.getDept());
+	    assertEquals("9999999999", student.getMobileno());
+	    assertEquals(85, student.getMarks());
+	}
+	
+	@Test
 	public void createnew() {
 		Student s=new Student(3,"ccc","eee","889667564",70);
 		Mockito.when(repo.findById(3)).thenReturn(Optional.empty());
